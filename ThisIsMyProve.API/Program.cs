@@ -1,15 +1,58 @@
+using FluentValidation.AspNetCore;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using System.Reflection;
+using ThisIsMyProve.Core.IRepositories;
+using ThisIsMyProve.Core.IServices;
+using ThisIsMyProve.DataAccess;
+using ThisIsMyProve.DataAccess.Repositories;
+using ThisIsMyProve.Services.Services;
+using ThisIsMyProve.Services.Validations;
+
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
-
-builder.Services.AddControllers();
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+builder.Services.AddControllers()
+    .AddFluentValidation(configurationExpression: x => x.RegisterValidatorsFromAssemblyContaining<ListSliderDtoValidation>());
+builder.Services.Configure<ApiBehaviorOptions>(options =>
+{
+    options.SuppressModelStateInvalidFilter = true;
+});
+
+string root = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location) + "\\Log\\";
+#region Library Services and Settings
+
+builder.Services.AddAutoMapper(typeof(Program));
+builder.Services.AddEntityFrameworkSqlServer().AddDbContext<thisIsMyProveDbContext>(x =>
+    x.UseSqlServer(builder.Configuration.GetConnectionString("SqlConnection"),
+        option =>
+        {
+            option.MigrationsAssembly(Assembly.GetAssembly(typeof(thisIsMyProveDbContext)).GetName().Name);
+        }));
+builder.Services.AddLogging(loggingBuilder =>
+{
+    loggingBuilder.AddFile(root + @"\Prove_{0:yyyy}-{0:MM}-{0:dd}.log", fileLoggerOpts =>
+    {
+        fileLoggerOpts.FormatLogFileName = fName =>
+        {
+            return String.Format(fName, DateTime.UtcNow);
+        };
+    });
+});
+
+#endregion
+#region Ioc Settings
+
+builder.Services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
+builder.Services.AddScoped(typeof(IGenericService<>), typeof(GenericService<>));
+
+#endregion
+
 
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
+
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
@@ -17,9 +60,6 @@ if (app.Environment.IsDevelopment())
 }
  
 app.UseHttpsRedirection();
-
 app.UseAuthorization();
-
 app.MapControllers();
-
 app.Run();

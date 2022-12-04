@@ -10,9 +10,4 @@
     <ProjectReference Include="..\ThisIsMyProve.Core\ThisIsMyProve.Core.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="EntityConfigurations\" />
-    <Folder Include="Repositories\" />
-  </ItemGroup>
-
 </Project>

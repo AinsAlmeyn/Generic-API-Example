@@ -1,12 +1,19 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Microsoft.EntityFrameworkCore;
+using System.Reflection;
+using ThisIsMyProve.Core.Entities.HomePageEntities;
 
 namespace ThisIsMyProve.DataAccess
 {
-    public class thisIsMyProveDbContext
+    public class thisIsMyProveDbContext : DbContext
     {
+        public thisIsMyProveDbContext(DbContextOptions<thisIsMyProveDbContext> options) : base(options) { }
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            modelBuilder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
+            base.OnModelCreating(modelBuilder);
+        }
+
+        public DbSet<Slider> Sliders { get; set; }
     }
 }
