@@ -46,6 +46,8 @@ builder.Services.AddLogging(loggingBuilder =>
 
 builder.Services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
 builder.Services.AddScoped(typeof(IGenericService<>), typeof(GenericService<>));
+builder.Services.AddScoped(typeof(ISliderRepository), typeof(SliderRepository));
+builder.Services.AddScoped(typeof(ISliderService), typeof(SliderService));
 
 #endregion
 

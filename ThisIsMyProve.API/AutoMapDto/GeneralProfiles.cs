@@ -9,6 +9,8 @@ namespace ThisIsMyProve.API.AutoMapDto
         public GeneralProfiles()
         {
             CreateMap<Slider,ListSliderDto>().ReverseMap();
+            CreateMap<Slider,AddSliderDto>().ReverseMap();
+            CreateMap<Slider,UpdateSliderDto>().ReverseMap();
         }
     }
 }
