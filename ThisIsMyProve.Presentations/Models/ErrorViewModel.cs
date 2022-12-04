@@ -1,4 +1,4 @@
-namespace ThisIsMyProve.Presentation.Models
+namespace ThisIsMyProve.Presentations.Models
 {
     public class ErrorViewModel
     {

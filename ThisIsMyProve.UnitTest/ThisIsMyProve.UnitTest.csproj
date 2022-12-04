@@ -21,8 +21,4 @@
     </PackageReference>
   </ItemGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\ThisIsMyProve.API\ThisIsMyProve.API.csproj" />
-  </ItemGroup>
-
 </Project>

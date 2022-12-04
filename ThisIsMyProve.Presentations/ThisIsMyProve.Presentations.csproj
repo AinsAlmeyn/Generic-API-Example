@@ -7,7 +7,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\ThisIsMyProve.API\ThisIsMyProve.API.csproj" />
+    <Folder Include="Controllers\" />
   </ItemGroup>
 
 </Project>
